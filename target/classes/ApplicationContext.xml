@@ -180,5 +180,8 @@
      -->
     <bean id="address2" class="com.qinsheng.spring.bean.Address" init-method="init" destroy-method="destroy"></bean>
 
-    <bean id="myBeanPostProcessor" class="com.qinsheng.spring.processor.MyBeanPostProcessor"></bean>
+    <!--
+        在所有的bean对象创建前后，都会调用processor里的前置，后缀方法，没用的时候先注释掉
+    -->
+<!--    <bean id="myBeanPostProcessor" class="com.qinsheng.spring.processor.MyBeanPostProcessor"></bean>-->
 </beans>
