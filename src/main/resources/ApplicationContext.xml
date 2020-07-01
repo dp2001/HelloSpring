@@ -1,103 +1,187 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/aop
-        https://www.springframework.org/schema/aop/spring-aop.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <context:property-placeholder location="classpath:db.properties" />
 
-<!--    <bean id="person" class="com.qinsheng.spring.bean.Person" >-->
-<!--        <property name="id" value="1"></property>-->
-<!--        <property name="age" value="122"></property>-->
-<!--        <property name="gender" value="男"></property>-->
-<!--        <property name="name" value="zhangsan"></property>-->
+    <!--
+        1, 默认情况下，即单例模式下，person对象是在容器创建完成的时候就已经创建完成，不是需要的时候才创建
+            可以通过设置 lazy-init="true" 来设置，在用的时候才创建
+        2，在 scope="prototype" 的情况下，默认就是在get对象的时候才创建。
+        3，对象的属性是通过setter/getter方法赋值的，并不是成员属性，这里设置成一样就行。
+    -->
+    <bean id="person" class="com.qinsheng.spring.bean.Person" >
+        <property name="id" value="1"></property>
+        <property name="age" value="18"></property>
+        <property name="name" value="zhangsan"></property>
+        <property name="gender" value="男"></property>
+    </bean>
 
-<!--        <property name="address" ref="address" />-->
-<!--        <property name="books" >-->
-<!--            <list>-->
-<!--                <bean id="book1" class="com.qinsheng.spring.bean.Book" >-->
-<!--                    <property name="author" value="wangwang" ></property>-->
-<!--                    <property name="name" value="book1" ></property>-->
-<!--                    <property name="price" value="122" ></property>-->
-<!--                </bean>-->
+    <!--
+        1, 需要有相应的构造方法
+        2, 给成员变量赋值，可以指定参数名，或按顺序赋值，或指定index从0开始给参数赋值
+        3, 如果有参数数量相同，但是类型不同的构造方法，可以通过type来强制转型，一般也不会用
+    -->
+    <bean id="person3" class="com.qinsheng.spring.bean.Person" >
+        <constructor-arg value="lisi" name="name" ></constructor-arg>
+    </bean>
+    <bean id="person4" class="com.qinsheng.spring.bean.Person" >
+        <constructor-arg value="4" ></constructor-arg>
+        <constructor-arg value="22" ></constructor-arg>
+        <constructor-arg value="lisi" ></constructor-arg>
+        <constructor-arg value="男" ></constructor-arg>
+    </bean>
+    <bean id="person5" class="com.qinsheng.spring.bean.Person" >
+        <constructor-arg value="lisi" index="2" ></constructor-arg>
+        <constructor-arg value="5" index="0" ></constructor-arg>
+        <constructor-arg value="22" index="1" ></constructor-arg>
+        <constructor-arg value="男" index="3" ></constructor-arg>
+    </bean>
 
-<!--                <ref bean="book2"></ref>-->
-<!--            </list>-->
-<!--        </property>-->
+    <!--
+        通过命名空间给对象赋值，这里需要导入命名空间p
+        xmlns:p="http://www.springframework.org/schema/p"
+    -->
+    <bean id="person6" class="com.qinsheng.spring.bean.Person" p:age="15" p:gender="女" p:name="wangwu" p:id="6">
+    </bean>
 
-<!--        <property name="hobbies">-->
-<!--            <array>-->
-<!--                <value>book</value>-->
-<!--                <value>movie</value>-->
-<!--                <value>game</value>-->
-<!--            </array>-->
-<!--        </property>-->
+    <!--
+        给复杂类型的赋值都在property标签内进行
+     -->
+    <bean id="complexPerson" class="com.qinsheng.spring.bean.ComplexPerson">
+        <property name="name">
+            <null></null>
+        </property>
+        <property name="address" ref="address"></property>
+        <!-- 给list赋值 -->
+        <property name="books">
+            <list>
+                <bean id="book1" class="com.qinsheng.spring.bean.Book">
+                    <property name="name" value="Effective Java"></property>
+                    <property name="author" value="Joshua Bloch"></property>
+                    <property name="price" value="37.65"></property>
+                </bean>
+                <ref bean="book2"></ref>
+            </list>
+        </property>
+        <property name="maps" ref="myMap"></property>
+        <property name="properties">
+            <props>
+                <prop key="aaa">111</prop>
+                <prop key="bbb">222</prop>
+            </props>
+        </property>
+        <property name="hobbies">
+            <array>
+                <value>book</value>
+                <value>movie</value>
+                <value>game</value>
+            </array>
+        </property>
+        <property name="gender" value="男"></property>
+        <property name="age" value="33"></property>
+        <property name="id" value="007"></property>
+        <property name="sets">
+            <set>
+                <value>111</value>
+                <value>112</value>
+                <value>113</value>
+            </set>
+        </property>
+    </bean>
 
-<!--        <property name="properties">-->
-<!--            <props>-->
-<!--                <prop key="aaa">aaa</prop>-->
-<!--                <prop key="bbb">222</prop>-->
-<!--            </props>-->
-<!--        </property>-->
+    <util:map id="myMap">
+        <entry key="key1" value="value1"></entry>
+        <entry key="key2" value-ref="book2"></entry>
+        <entry key="key3">
+            <bean class="com.qinsheng.spring.bean.Book">
+                <property name="price" value="155"></property>
+                <property name="author" value="吴承恩"></property>
+                <property name="name" value="西游记"></property>
+            </bean>
+        </entry>
+    </util:map>
 
-<!--        <property name="maps" ref="myMap"></property>-->
-<!--    </bean>-->
+    <bean id="address" class="com.qinsheng.spring.bean.Address">
+        <property name="province" value="上海"></property>
+        <property name="city" value="上海"></property>
+        <property name="town" value="浦东新区"></property>
+    </bean>
+    <bean id="book2" class="com.qinsheng.spring.bean.Book">
+        <property name="name" value="JVM"></property>
+        <property name="author" value="周志明"></property>
+        <property name="price" value="81.33"></property>
+    </bean>
 
-<!--    <bean id="address" class="com.qinsheng.spring.bean.Address">-->
-<!--        <property name="province" value="河北"></property>-->
-<!--        <property name="city" value="邯郸"></property>-->
-<!--        <property name="town" value="武安"></property>-->
-<!--    </bean>-->
-<!--    <bean id="book2" class="com.qinsheng.spring.bean.Book">-->
-<!--        <property name="name" value="JVM"></property>-->
-<!--        <property name="author" value="马士兵"></property>-->
-<!--        <property name="price" value="1200"></property>-->
-<!--    </bean>-->
+    <!--
+        指定父bean对象，可以继承和覆盖父bean对象的属性
+     -->
+    <bean id="parent" class="com.qinsheng.spring.bean.Person">
+        <property name="id" value="110"></property>
+        <property name="age" value="67"></property>
+        <property name="name" value="parent"></property>
+        <property name="gender" value="男"></property>
+    </bean>
+    <bean id="son" class="com.qinsheng.spring.bean.Person" parent="parent">
+        <property name="age" value="23"></property>
+        <property name="name" value="son"></property>
+    </bean>
 
-<!--    <util:map id="myMap">-->
-<!--        <entry key="key1" value="value1"></entry>-->
-<!--        <entry key="key2" value-ref="book2"></entry>-->
-<!--        <entry key="key03">-->
-<!--            <bean class="com.qinsheng.spring.bean.Book">-->
-<!--                <property name="name" value="西游记" ></property>-->
-<!--                <property name="author" value="吴承恩" ></property>-->
-<!--                <property name="price" value="100" ></property>-->
-<!--            </bean>-->
-<!--        </entry>-->
-<!--    </util:map>-->
+    <!--
+        可以指定bean为抽象类，不能实例化
+     -->
+    <bean id="abstractPerson" class="com.qinsheng.spring.bean.Person" abstract="true">
+        <property name="id" value="110"></property>
+        <property name="age" value="67"></property>
+        <property name="name" value="abstract"></property>
+        <property name="gender" value="男"></property>
+    </bean>
+    <bean id="instance" parent="abstractPerson" class="com.qinsheng.spring.bean.Person">
+        <property name="name" value="instance"></property>
+    </bean>
 
-<!--    <bean id="person6" class="com.qinsheng.spring.bean.Person" p:id="2" p:name="wangwu" p:gender="女" p:age="12" />-->
+    <!--
+        指定对象的创建顺序，默认是按照配置文件的顺序决定的
+    -->
+    <bean id="dependTestBook" class="com.qinsheng.spring.bean.Book" depends-on="dependTestPerson,dependTestAddress"></bean>
+    <bean id="dependTestAddress" class="com.qinsheng.spring.bean.Address"></bean>
+    <bean id="dependTestPerson" class="com.qinsheng.spring.bean.Person"></bean>
 
-<!--&lt;!&ndash;    <bean id="myBeanPostProcessor" class="com.qinsheng.spring.processor.MyBeanPostProcessor" ></bean>&ndash;&gt;-->
+    <!-- ================================================================================================
+        在这以上的配置中，所有的bean对象的创建都是通过反射得到对应的bean实例，spring中还包含另外一种创建bean实例的方式
+        通过工厂模式
+        静态工厂： 工厂本身不需要创建对象，但是可以通过静态方法调用，对象=工厂类.静态工厂方法名()
+        动态工厂： 工厂本身需要创建对象，工厂对象.get对象名()
+    ===============================================================================================   -->
 
-<!--    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">-->
-<!--        <property name="username" value="${username}"></property>-->
-<!--        <property name="password" value="${password}"></property>-->
-<!--        <property name="url" value="${url}"></property>-->
-<!--        <property name="driverClassName" value="${driverClassName}"></property>-->
-<!--    </bean>-->
+    <bean id="personStatic" class="com.qinsheng.spring.factory.PersonStaticFactory" factory-method="getPerson">
+        <constructor-arg value="lisi"></constructor-arg>
+    </bean>
 
-    <context:component-scan base-package="com.qinsheng">
-        <!--
-        当定义好基础扫描的包之后，可以排除包中的某些类，使用如下的方式:
-        type:表示指定过滤的规则
-            annotation：按照注解进行排除，标注了指定注解的组件不要,expression表示要过滤的注解
-            assignable：指定排除某个具体的类，按照类排除，expression表示不注册的具体类名
-            aspectj：后面讲aop的时候说明要使用的aspectj表达式，不用
-            custom：定义一个typeFilter,自己写代码决定哪些类被过滤掉，不用
-            regex：使用正则表达式过滤，不用
-        -->
-        <!--        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>-->
+    <bean id="personInstanceFactory" class="com.qinsheng.spring.factory.PersonInstanceFactory" >
+    </bean>
+    <bean id="personInstance" class="com.qinsheng.spring.bean.Person" factory-bean="personInstanceFactory"
+          factory-method="getPerson">
+        <constructor-arg name="name" value="wangwu"></constructor-arg>
+    </bean>
 
-        <!--指定只扫描哪些组件，默认情况下是全部扫描的，所以此时要配置的话需要在component-scan标签中添加 use-default-filters="false"-->
-    </context:component-scan>
+    <!--  MyFactoryBean是Spring可以识别的工厂类，spring会自动调用工厂方法创建实例  -->
+    <bean id="myFactoryBean" class="com.qinsheng.spring.factory.MyFactoryBean"></bean>
 
-    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
-    
+    <!--
+        bean的生命周期
+        如果bean是单例，那么容器启动的时候会创建好，关闭的时候会销毁，调用destroy-method
+        如果bean是多例，那么在获取bean的时候会创建，销毁的时候不会有任何的调用
+     -->
+    <bean id="address2" class="com.qinsheng.spring.bean.Address" init-method="init" destroy-method="destroy"></bean>
+
+    <!--
+        在所有的bean对象创建前后，都会调用processor里的前置，后缀方法，没用的时候先注释掉
+    -->
+<!--    <bean id="myBeanPostProcessor" class="com.qinsheng.spring.processor.MyBeanPostProcessor"></bean>-->
 </beans>

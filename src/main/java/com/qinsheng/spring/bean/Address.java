@@ -1,14 +1,21 @@
 package com.qinsheng.spring.bean;
 
+/**
+ * @Author: qinsheng
+ * @Date: 2020/6/30 01:24
+ */
 public class Address {
+
     private String province;
     private String city;
     private String town;
 
     public Address() {
+        System.out.println("address created");
     }
 
     public Address(String province, String city, String town) {
+//        System.out.println("address init 2");
         this.province = province;
         this.city = city;
         this.town = town;
@@ -45,5 +52,13 @@ public class Address {
                 ", city='" + city + '\'' +
                 ", town='" + town + '\'' +
                 '}';
+    }
+
+    public void init() {
+        System.out.println("address init");
+    }
+
+    public void destroy() {
+        System.out.println("address destroy");
     }
 }

@@ -1,36 +1,29 @@
 package com.qinsheng.spring.bean;
 
-import java.util.*;
-
 /**
- * Created by qinsheng on 2020/4/23.
+ * @Author: qinsheng
+ * @Date: 2020/6/29 23:26
  */
 public class Person {
-    private String name;
-    private int age;
-    private int id;
-    private String gender;
-    private Address address;
-    private String[] hobbies;
-    private List<Book> books;
-    private Set<Integer> sets;
-    private Map<String,Object> maps;
-    private Properties properties;
 
-    public String getName() {
-        return name;
+    private int id;
+    private int age;
+    private String name;
+    private String gender;
+
+    public Person(){
+//        System.out.println("person init");   // 测试对象创建时间
     }
 
-    public void setName(String name) {
+    public Person(String name) {
         this.name = name;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
+    public Person(int id, int age, String name, String gender) {
+        this.id = id;
         this.age = age;
+        this.name = name;
+        this.gender = gender;
     }
 
     public int getId() {
@@ -41,6 +34,22 @@ public class Person {
         this.id = id;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getGender() {
         return gender;
     }
@@ -49,67 +58,13 @@ public class Person {
         this.gender = gender;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public String[] getHobbies() {
-        return hobbies;
-    }
-
-    public void setHobbies(String[] hobbies) {
-        this.hobbies = hobbies;
-    }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
-
-    public Set<Integer> getSets() {
-        return sets;
-    }
-
-    public void setSets(Set<Integer> sets) {
-        this.sets = sets;
-    }
-
-    public Map<String, Object> getMaps() {
-        return maps;
-    }
-
-    public void setMaps(Map<String, Object> maps) {
-        this.maps = maps;
-    }
-
-    public Properties getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Properties properties) {
-        this.properties = properties;
-    }
-
     @Override
     public String toString() {
         return "Person{" +
-                "name='" + name + '\'' +
+                "id=" + id +
                 ", age=" + age +
-                ", id=" + id +
+                ", name='" + name + '\'' +
                 ", gender='" + gender + '\'' +
-                ", address=" + address +
-                ", hobbies=" + Arrays.toString(hobbies) +
-                ", books=" + books +
-                ", sets=" + sets +
-                ", maps=" + maps +
-                ", properties=" + properties +
                 '}';
     }
 }
