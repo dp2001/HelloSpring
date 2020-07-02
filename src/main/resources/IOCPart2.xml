@@ -19,4 +19,19 @@
         <property name="driverClassName" value="${driverClassName}"></property>
     </bean>
 
+    <!--
+        定义自动扫描的基础包
+        base-package: 指定扫描的基础包，spring在启动的时候会将基础包及子包下所有加了注解的类都自动扫描进IOC容器
+        默认情况下是全部扫描的，如果需要排除某些组件，需要设置use-default-filters="false"
+        排除规则：<context:exclude-filter type可以设为annotation表示按注解进行排除，排除所有指定注解的，例如Controller
+            <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+                type 可以指定按具体类名进行排除
+            <context:exclude-filter type="assignable" expression="com.qinsheng.spring.annotation.controller.PersonController"/>
+    -->
+    <context:component-scan base-package="com.qinsheng.spring.annotation" >
+<!--        <context:exclude-filter type="assignable" expression="com.qinsheng.spring.annotation.controller.PersonController"/>-->
+        
+    </context:component-scan>
+
+
 </beans>
